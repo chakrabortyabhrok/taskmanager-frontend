@@ -5,7 +5,7 @@ import FilterBar from './components/FilterBar';
 import TaskList from './components/TaskList';
 import TaskModal from './components/TaskModal';
 
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem('access_token') || '');
