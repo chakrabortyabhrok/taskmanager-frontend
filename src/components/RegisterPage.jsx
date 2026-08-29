@@ -26,7 +26,7 @@ export default function RegistrationForm() {
             const response = await fetch(`${API_BASE}/api/auth/register/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, email, password, password2:confirmPassword }),
+                body: JSON.stringify({ username, email, password, password2: confirmPassword }),
             });
 
             const data = await response.json();
@@ -46,10 +46,10 @@ export default function RegistrationForm() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 relative">
+        <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl w-full max-w-md shadow-2xl space-y-6">
             <h2>Register Test</h2>
             {error && <p style={{ color: "red" }}>{error}</p>}
-            
+
             <form onSubmit={handleForm} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
                 <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                 <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -59,6 +59,16 @@ export default function RegistrationForm() {
                     {loading ? "Submitting..." : "Submit"}
                 </button>
             </form>
+            <p className="text-center text-xs text-slate-400 mt-4">
+                Already have an account?{' '}
+                <button
+                    type="button"
+                    onClick={onSwitchToLogin}
+                    className="text-blue-400 hover:underline font-semibold"
+                >
+                    Sign In
+                </button>
+            </p>
         </div>
     );
 }

@@ -16,6 +16,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem('access_token') || '');
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -190,6 +191,25 @@ export default function App() {
           onLoginSuccess={(newToken) => setToken(newToken)}
           showToast={showToast}
         />
+      </div>
+    );
+  }
+
+  if (!token) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 relative">
+        {renderToast()}
+
+        {isRegistering ? (
+          <RegisterPage
+            onSwitchToLogin={() => setIsRegistering(false)}
+          />
+        ) : (
+          <Login
+            onLoginSuccess={(newToken) => setToken(newToken)}
+            onSwitchToRegister={() => setIsRegistering(true)}
+          />
+        )}
       </div>
     );
   }
