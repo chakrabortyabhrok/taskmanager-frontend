@@ -3,7 +3,7 @@ import { useState } from "react";
 // Define API_BASE at the top of the file
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
 
-export default function TestForm() {
+export default function RegistrationForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -46,7 +46,7 @@ export default function TestForm() {
     };
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div className="min-h-screen flex items-center justify-center p-4 relative">
             <h2>Register Test</h2>
             {error && <p style={{ color: "red" }}>{error}</p>}
             
