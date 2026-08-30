@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-// Define API_BASE at the top of the file
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
 
 export default function RegistrationForm() {
@@ -11,6 +11,7 @@ export default function RegistrationForm() {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleForm = async (e) => {
         e.preventDefault();
@@ -33,41 +34,73 @@ export default function RegistrationForm() {
             console.log("Django Response:", data);
 
             if (!response.ok) {
-                setError(data.detail || JSON.stringify(data) || "Registration Failed");
+                setError(data.detail || JSON.stringify(data) || "Registration failed");
             } else {
-                console.log("Success! Redirect to login here.");
+                alert("Account created successfully! Please sign in.");
+                navigate("/login");
             }
-
         } catch (err) {
-            setError("Something went wrong");
+            setError("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
+
+
     return (
         <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl w-full max-w-md shadow-2xl space-y-6">
-            <h2>Register Test</h2>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <h2 className="text-2xl font-bold text-white text-center">Register</h2>
 
-            <form onSubmit={handleForm} style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px" }}>
-                <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                <input placeholder="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-                <button type="submit" disabled={loading}>
+            {error && <p className="text-rose-500 text-sm text-center">{error}</p>}
+
+            <form onSubmit={handleForm} className="flex flex-col gap-3">
+                <input
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    className="bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                    placeholder="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                    placeholder="Password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                    placeholder="Confirm Password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl transition-all disabled:opacity-50 mt-2"
+                >
                     {loading ? "Submitting..." : "Submit"}
                 </button>
             </form>
+
             <p className="text-center text-xs text-slate-400 mt-4">
                 Already have an account?{' '}
-                <button
-                    type="button"
-                    onClick={onSwitchToLogin}
-                    className="text-blue-400 hover:underline font-semibold"
-                >
+                <Link to="/login" className="text-blue-400 hover:underline font-semibold">
                     Sign In
-                </button>
+                </Link>
             </p>
         </div>
     );

@@ -4,6 +4,7 @@
 // }
 
 import { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Stats from './components/Stats';
 import FilterBar from './components/FilterBar';
@@ -176,40 +177,34 @@ export default function App() {
   );
 
   // Render Login Screen if unauthenticated
-  if (!token) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4 relative">
-        {toast && (
-          <div className="fixed top-5 right-5 z-50 max-w-sm w-full">
-            <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-medium shadow-xl ${toast.type === 'success' ? 'bg-emerald-950/90 border-emerald-800 text-emerald-200' : 'bg-rose-950/90 border-rose-800 text-rose-200'
-              }`}>
-              <span>{toast.message}</span>
-            </div>
-          </div>
-        )}
-        <Login
-          onLoginSuccess={(newToken) => setToken(newToken)}
-          showToast={showToast}
-        />
-      </div>
-    );
-  }
+  // if (!token) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center p-4 relative">
+  //       {toast && (
+  //         <div className="fixed top-5 right-5 z-50 max-w-sm w-full">
+  //           <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-medium shadow-xl ${toast.type === 'success' ? 'bg-emerald-950/90 border-emerald-800 text-emerald-200' : 'bg-rose-950/90 border-rose-800 text-rose-200'
+  //             }`}>
+  //             <span>{toast.message}</span>
+  //           </div>
+  //         </div>
+  //       )}
+  //       <Login
+  //         onLoginSuccess={(newToken) => setToken(newToken)}
+  //         showToast={showToast}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   if (!token) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 relative">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-slate-950 relative">
         {renderToast()}
-
-        {isRegistering ? (
-          <RegisterPage
-            onSwitchToLogin={() => setIsRegistering(false)}
-          />
-        ) : (
-          <Login
-            onLoginSuccess={(newToken) => setToken(newToken)}
-            onSwitchToRegister={() => setIsRegistering(true)}
-          />
-        )}
+        <Routes>
+          <Route path="/login" element={<Login onLoginSuccess={(newToken) => setToken(newToken)} showToast={showToast} />} />
+          <Route path="/register" element={<RegistrationForm showToast={showToast} />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
       </div>
     );
   }
