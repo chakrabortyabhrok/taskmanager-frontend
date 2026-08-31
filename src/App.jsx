@@ -1,8 +1,3 @@
-
-// export default function App() {
-//   return <RegisterPage />;
-// }
-
 import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
@@ -177,25 +172,6 @@ export default function App() {
   );
 
   // Render Login Screen if unauthenticated
-  // if (!token) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center p-4 relative">
-  //       {toast && (
-  //         <div className="fixed top-5 right-5 z-50 max-w-sm w-full">
-  //           <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-medium shadow-xl ${toast.type === 'success' ? 'bg-emerald-950/90 border-emerald-800 text-emerald-200' : 'bg-rose-950/90 border-rose-800 text-rose-200'
-  //             }`}>
-  //             <span>{toast.message}</span>
-  //           </div>
-  //         </div>
-  //       )}
-  //       <Login
-  //         onLoginSuccess={(newToken) => setToken(newToken)}
-  //         showToast={showToast}
-  //       />
-  //     </div>
-  //   );
-  // }
-
   if (!token) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-slate-950 relative">

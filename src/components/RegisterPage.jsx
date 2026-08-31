@@ -47,7 +47,6 @@ export default function RegistrationForm() {
     };
 
 
-
     return (
         <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl w-full max-w-md shadow-2xl space-y-6">
             <h2 className="text-2xl font-bold text-white text-center">Register</h2>
