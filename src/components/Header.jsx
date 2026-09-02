@@ -4,7 +4,7 @@ export default function Header({ onOpenModal, onLogout }) {
     <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-800">
       <div>
         <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
-          <i className="fas fa-list-check text-blue-500"></i> Task Manager
+          <i className="fas fa-list-check text-blue-500"></i> AI Task Manager
         </h1>
         <p className="text-slate-400 text-sm mt-1">Django REST Framework API Interface</p>
       </div>
