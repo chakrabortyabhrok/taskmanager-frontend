@@ -1,24 +1,67 @@
 
 import { useState } from 'react';
 
-export default function AIChatWidget() {
+
+export default function AIChatWidget({ token }) {
+  
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { id: 1, sender: 'ai', text: 'Hi! Ask me anything about your tasks.' },
   ]);
   const [input, setInput] = useState('');
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    setMessages((prev) => [...prev, { id: Date.now(), sender: 'user', text: input }]);
+    const question = input.trim()
+
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), sender: 'user', text: question }
+    ]);
+
     setInput('');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/tasks/ask_ai/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ question }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'something went wrong');
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          sender: 'ai',
+          text: data.answer || data.response || 'No answer received',
+        },
+      ]);
+
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          sender: 'ai',
+          text: err.message || 'Failed to get an answer',
+        },
+      ]);
+    }
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 font-sans">
-      
+
       {isOpen && (
         <div className="w-80 sm:w-96 h-115 flex flex-col bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
           {/* Header */}
@@ -37,7 +80,7 @@ export default function AIChatWidget() {
             </button>
           </div>
 
-           {/* Messages Area  */}
+          {/* Messages Area  */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-900/50">
             {messages.map((msg) => (
               <div
@@ -45,11 +88,10 @@ export default function AIChatWidget() {
                 className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] px-3.5 py-2 rounded-xl text-sm ${
-                    msg.sender === 'user'
-                      ? 'bg-indigo-600 text-white rounded-br-none'
-                      : 'bg-slate-800 text-slate-200 border border-slate-700/50 rounded-bl-none'
-                  }`}
+                  className={`max-w-[80%] px-3.5 py-2 rounded-xl text-sm ${msg.sender === 'user'
+                    ? 'bg-indigo-600 text-white rounded-br-none'
+                    : 'bg-slate-800 text-slate-200 border border-slate-700/50 rounded-bl-none'
+                    }`}
                 >
                   {msg.text}
                 </div>

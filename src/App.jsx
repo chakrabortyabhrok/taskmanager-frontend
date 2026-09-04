@@ -106,6 +106,9 @@ export default function App() {
       showToast('Failed to update status', 'error');
     }
   };
+  // Ask AI Chat Widget 
+
+  // const
 
   // Save Task (Create or Update)
   const handleSaveTask = async (taskData) => {
@@ -229,7 +232,7 @@ export default function App() {
         taskToEdit={taskToEdit}
       />
       <AIChatWidget
-
+        token={token}
       />
     </div>
   );
